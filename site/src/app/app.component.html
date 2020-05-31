@@ -1,0 +1,32 @@
+<div class="main-container">
+  <div class="content-container">
+    <div class="content-area">
+      <div class="clr-row">
+        <div class="clr-col-12">
+          <h1>The cost of rising inequality</h1>
+          <p>
+            You probably already know that inequality in America is rising, and that much of the economic gains of the
+            past four decades have gone to the very wealthy. (If you don't, see <a
+              href="https://www.nytimes.com/interactive/2020/04/10/opinion/coronavirus-us-economy-inequality.html">David
+              Leonhardt and Yaryna Serkez's excellent article in the Times</a>).
+          </p>
+          <p>
+            But what does that mean for you? Enter your post-tax annual income below to find out.
+          </p>
+          <form clrForm>
+            <clr-input-container>
+              <label>Income</label>
+              <input clrInput placeholder="30000" name="income" [(ngModel)]="income" />
+            </clr-input-container>
+          </form>
+        </div>
+      </div>
+
+      <div class="clr-row">
+        <div class="clr-col-12">
+          <div id="incomePlot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
