@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: min(400px, 50vh);
+}
