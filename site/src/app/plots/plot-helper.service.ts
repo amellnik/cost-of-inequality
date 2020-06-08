@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Layout, Data, Config } from 'plotly.js';
 
-import { DataRow } from './data/types';
+import { DataRow } from '../data/types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlotHelperService {
 
-  percentFormat = new Intl.NumberFormat('en-US', { style: 'percent' });
+  percentFormat = new Intl.NumberFormat('en-US', { style: 'percent', maximumSignificantDigits: 3 });
 
   config = {
-    responsive: true
+    responsive: true,
   };
 
-  defaultLayout = {
+  defaultLayout: Partial<Layout> = {
     autosize: true,
     plot_bgcolor: '#FAFAFA',
-    paper_bgcolor: '#FAFAFA'
+    paper_bgcolor: '#FAFAFA',
+    hovermode: 'closest'
   };
 
   constructor() { }
@@ -26,9 +27,6 @@ export class PlotHelperService {
     return this.percentFormat.format(1 - p);
   }
 
-  findPercentile(income: number, year: DataRow[], accessor) {
-
-  }
 }
 
 export interface PlotObj {

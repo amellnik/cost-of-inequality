@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import Debounce from 'debounce-decorator';
+
 import { DataService } from './data/data.service';
 import { PlotHelperService, PlotObj } from './plots/plot-helper.service';
 import { Data } from 'plotly.js';
@@ -14,6 +16,8 @@ import { DataRow } from './data/types';
 export class AppComponent implements OnInit {
 
   income: number;
+  percentileIndex: number;
+  currentYear: DataRow[];
   distribution: PlotObj = {
     data: [],
     layout: {},
@@ -29,26 +33,44 @@ export class AppComponent implements OnInit {
     this.dataService.ready.subscribe(ready => ready && this.drawDistribution());
   }
 
+  @Debounce()
+  newIncome() {
+    // Bisect to find the first row where start <= income
+    this.percentileIndex = this.bisect(this.currentYear, 0, this.currentYear.length - 1);
+    console.log(this.currentYear);
+    this.drawDistribution();
+  }
+
+  formattedPercentile() {
+    return this.plotHelper.percentileAxisFormatter(this.currentYear[this.percentileIndex].start);
+  }
+
   drawDistribution() {
-    const year = this.dataService.incomeYear(2014);
+    if (!this.currentYear) {
+      this.currentYear = this.dataService.incomeYear(2014);
+    }
     const data: Data[] = [{
       type: 'scatter',
-      x: year.map(r => r.start),
-      y: year.map(r => r.value),
-      mode: 'lines'
+      x: this.currentYear.map(r => r.start),
+      y: this.currentYear.map(r => r.value),
+      mode: 'lines',
+      showlegend: false
     }];
     if (this.income) {
       data.push({
         type: 'scatter',
-        x: [],
-        y: [],
-        mode: 'markers'
+        x: [this.currentYear[this.percentileIndex].start],
+        y: [this.income],
+        text: ['You'],
+        mode: 'text+markers',
+        textposition: 'top left',
+        showlegend: false
       });
     }
     const layout = {
       ...this.plotHelper.defaultLayout,
       yaxis: {
-        range: [1, 1000000]
+        range: [1, 30000000]
       }
     };
     this.distribution = {
@@ -56,5 +78,14 @@ export class AppComponent implements OnInit {
       layout,
       config: this.plotHelper.config
     };
+  }
+
+  private bisect(arr: DataRow[], left: number, right: number) {
+    const mid = Math.floor((right + left) / 2);
+    if (mid === left) {
+      return mid;
+    }
+    return this.income > arr[mid].value ?
+      this.bisect(arr, mid, right) : this.bisect(arr, left, mid);
   }
 }

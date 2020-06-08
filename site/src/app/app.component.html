@@ -16,15 +16,29 @@
           <form clrForm>
             <clr-input-container>
               <label>Income</label>
-              <input clrInput placeholder="$30,000" name="income" [(ngModel)]="income" />
+              <input clrInput placeholder="$30,000" name="income" [(ngModel)]="income" (ngModelChange)="newIncome()" />
             </clr-input-container>
           </form>
+        </div>
+        <div class="clr-col-12" *ngIf="!!this.percentileIndex">
+          <p>
+            You are in the top {{formattedPercentile()}} of all Americans by income.
+          </p>
+          <p>
+            The plot below shows how you fare compared to other Americans. The left access is
+            post-tax income and the bottom axis show the percentile of income.
+          </p>
+          <p>
+            This plot is difficult to read since the lowest 99% of Americans make so much less
+            than the extremely rich. We can make this easier by making it a log-log plot.
+          </p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- This footer contains the primary plot which always sits at the bottom of the screen. -->
 <div id="footer">
   <plotly-plot [data]="distribution.data" [layout]="distribution.layout" [useResizeHandler]="true"
     [style]="{position: 'relative', width: '100%', height: '100%'}">
