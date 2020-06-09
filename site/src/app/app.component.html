@@ -32,6 +32,15 @@
             This plot is difficult to read since the lowest 99% of Americans make so much less
             than the extremely rich. We can make this easier by making it a log-log plot.
           </p>
+          <form clrForm>
+            <clr-toggle-container>
+              <clr-toggle-wrapper>
+                <input type="checkbox" clrToggle value="log1" name="log-check" [(ngModel)]="logPlot"
+                  (ngModelChange)="drawDistribution()" />
+                <label>Log axes</label>
+              </clr-toggle-wrapper>
+            </clr-toggle-container>
+          </form>
         </div>
       </div>
     </div>

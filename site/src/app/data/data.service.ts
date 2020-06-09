@@ -23,7 +23,11 @@ export class DataService {
   }
 
   incomeYear(year: number) {
-    return this.income.filter(r => r.year === year);
+    return this.income.filter(r => r.year === year)
+      .map(r => {
+        r.value = Math.max(r.value, 1);
+        return r;
+      });
   }
 
 }

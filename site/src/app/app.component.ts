@@ -3,7 +3,7 @@ import Debounce from 'debounce-decorator';
 
 import { DataService } from './data/data.service';
 import { PlotHelperService, PlotObj } from './plots/plot-helper.service';
-import { Data } from 'plotly.js';
+import { Data, Layout } from 'plotly.js';
 
 
 import { DataRow } from './data/types';
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
     layout: {},
     config: {}
   };
+  logPlot = true;
 
   constructor(
     private dataService: DataService,
@@ -51,7 +52,7 @@ export class AppComponent implements OnInit {
     }
     const data: Data[] = [{
       type: 'scatter',
-      x: this.currentYear.map(r => r.start),
+      x: this.currentYear.map(r => this.logPlot ? 1 - r.start : r.start),
       y: this.currentYear.map(r => r.value),
       mode: 'lines',
       showlegend: false
@@ -59,7 +60,8 @@ export class AppComponent implements OnInit {
     if (this.income) {
       data.push({
         type: 'scatter',
-        x: [this.currentYear[this.percentileIndex].start],
+        x: [this.logPlot ? 1 - this.currentYear[this.percentileIndex].start :
+          this.currentYear[this.percentileIndex].start],
         y: [this.income],
         text: ['You'],
         mode: 'text+markers',
@@ -67,10 +69,15 @@ export class AppComponent implements OnInit {
         showlegend: false
       });
     }
-    const layout = {
+    const layout: Partial<Layout> = {
       ...this.plotHelper.defaultLayout,
+      xaxis: {
+        type: this.logPlot ? 'log' : undefined,
+        autorange: this.logPlot ? 'reversed' : undefined
+      },
       yaxis: {
-        range: [1, 30000000]
+        range: this.logPlot ? undefined : [1, 30000000],
+        type: this.logPlot ? 'log' : undefined
       }
     };
     this.distribution = {
