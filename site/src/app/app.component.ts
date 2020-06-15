@@ -24,6 +24,11 @@ export class AppComponent implements OnInit {
     config: {}
   };
   logPlot = false;
+  step = 0;
+  // Steps are:
+  // 0: Initial page load, just income
+  // 1: Show plot, log scale button
+  // 2: Log switch has been triggered at least once, show further text
 
   constructor(
     private dataService: DataService,
@@ -36,6 +41,7 @@ export class AppComponent implements OnInit {
 
   @Debounce()
   newIncome() {
+    this.step = Math.max(this.step, 1);
     // Bisect to find the first row where start <= income
     this.percentileIndex = this.bisect(this.currentYear, 0, this.currentYear.length - 1);
     console.log(this.currentYear);
@@ -43,7 +49,12 @@ export class AppComponent implements OnInit {
   }
 
   formattedPercentile() {
-    return this.plotHelper.percentileAxisFormatter(this.currentYear[this.percentileIndex].start);
+    return this.plotHelper.percentileAxisFormatter(1 - this.currentYear[this.percentileIndex].start);
+  }
+
+  logToggled() {
+    this.step = Math.max(this.step, 2);
+    this.drawDistribution();
   }
 
   drawDistribution() {
@@ -60,8 +71,7 @@ export class AppComponent implements OnInit {
     if (this.income) {
       data.push({
         type: 'scatter',
-        x: [this.logPlot ? 1 - this.currentYear[this.percentileIndex].start :
-          this.currentYear[this.percentileIndex].start],
+        x: [1 - this.currentYear[this.percentileIndex].start],
         y: [this.income],
         text: ['You'],
         mode: 'text+markers',
@@ -75,11 +85,13 @@ export class AppComponent implements OnInit {
       xaxis: {
         ...ticks,
         type: this.logPlot ? 'log' : undefined,
-        autorange: 'reversed'
+        autorange: 'reversed',
+        title: 'Top percentile of post-tax income'
       },
       yaxis: {
         range: this.logPlot ? undefined : [1, 30000000],
-        type: this.logPlot ? 'log' : undefined
+        type: this.logPlot ? 'log' : undefined,
+        title: 'Post-tax disposable income ($)'
       }
     };
     this.distribution = {

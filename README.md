@@ -1,1 +1,1 @@
-inequality
+# The cost of rising inequality

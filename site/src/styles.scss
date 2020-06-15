@@ -1,5 +1,5 @@
 .main-container {
-    overflow-y: scroll; 
+    overflow: auto;
     top: 0;
     width: 100%;
     height: calc(100vh - min(400px, 50vh));
@@ -10,5 +10,6 @@
     bottom: 0;
     width: 100%;
     height: min(400px, 50vh);
-    border-top: 1px solid #aaaaaa;
+    padding: 1.2rem;
+    background-color: #FAFAFA;
 }
