@@ -1,51 +1,55 @@
-<div class="main-container">
-  <div class="content-container">
-    <div class="content-area">
-      <div class="clr-row">
-        <div class="clr-col-12">
-          <h1>The cost of rising inequality</h1>
-          <p>
-            You probably already know that inequality in America is rising, and that much of the economic gains of the
-            past four decades have gone to the very wealthy. (If you don't, see <a
-              href="https://www.nytimes.com/interactive/2020/04/10/opinion/coronavirus-us-economy-inequality.html">David
-              Leonhardt and Yaryna Serkez's excellent article in the Times</a>).
-          </p>
-          <p>
-            But what does that mean for you? Enter your post-tax annual income below to find out.
-          </p>
-          <form clrForm>
-            <clr-input-container>
-              <label>Income</label>
-              <input clrInput placeholder="$30,000" name="income" [(ngModel)]="income" (ngModelChange)="newIncome()" />
-            </clr-input-container>
-          </form>
-        </div>
-        <div class="clr-col-12" *ngIf="!!this.percentileIndex">
-          <p>
-            You are in the top {{formattedPercentile()}} of all Americans by income.
-          </p>
-          <p>
-            The plot below shows how you fare compared to other Americans. The left access is
-            post-tax income and the bottom axis show the percentile of income.
-          </p>
-          <p>
-            This plot is difficult to read since the lowest 99% of Americans make so much less
-            than the extremely rich. We can make this easier by making it a log-log plot.
-          </p>
-          <form clrForm>
-            <clr-toggle-container>
-              <clr-toggle-wrapper>
-                <input type="checkbox" clrToggle value="log1" name="log-check" [(ngModel)]="logPlot"
-                  (ngModelChange)="drawDistribution()" />
-                <label>Log axes</label>
-              </clr-toggle-wrapper>
-            </clr-toggle-container>
-          </form>
+<div id="not-footer">
+  <div class="main-container">
+    <div class="content-container">
+      <div class="content-area">
+        <div class="clr-row">
+          <div class="clr-col-12">
+            <h1>The cost of rising inequality</h1>
+            <p>
+              You probably already know that inequality in America is rising, and that much of the economic gains of the
+              past four decades have gone to the very wealthy. (If you don't, see <a
+                href="https://www.nytimes.com/interactive/2020/04/10/opinion/coronavirus-us-economy-inequality.html">David
+                Leonhardt and Yaryna Serkez's excellent article in the Times</a>).
+            </p>
+            <p>
+              But what does that mean for you? Enter your post-tax annual income below to find out.
+            </p>
+            <form clrForm>
+              <clr-input-container>
+                <label>Income</label>
+                <input clrInput placeholder="$30,000" name="income" [(ngModel)]="income"
+                  (ngModelChange)="newIncome()" />
+              </clr-input-container>
+            </form>
+          </div>
+          <div class="clr-col-12" *ngIf="!!this.percentileIndex">
+            <p>
+              You are in the top {{formattedPercentile()}} of all Americans by income.
+            </p>
+            <p>
+              The plot below shows how you fare compared to other Americans. The left access is
+              post-tax income and the bottom axis show the percentile of income.
+            </p>
+            <p>
+              This plot is difficult to read since the lowest 99% of Americans make so much less
+              than the extremely rich. We can make this easier by making it a log-log plot.
+            </p>
+            <form clrForm>
+              <clr-toggle-container>
+                <clr-toggle-wrapper>
+                  <input type="checkbox" clrToggle value="log1" name="log-check" [(ngModel)]="logPlot"
+                    (ngModelChange)="drawDistribution()" />
+                  <label>Log axes</label>
+                </clr-toggle-wrapper>
+              </clr-toggle-container>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- This footer contains the primary plot which always sits at the bottom of the screen. -->
 <div id="footer">

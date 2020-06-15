@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     layout: {},
     config: {}
   };
-  logPlot = true;
+  logPlot = false;
 
   constructor(
     private dataService: DataService,
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
     }
     const data: Data[] = [{
       type: 'scatter',
-      x: this.currentYear.map(r => this.logPlot ? 1 - r.start : r.start),
+      x: this.currentYear.map(r => 1 - r.start),
       y: this.currentYear.map(r => r.value),
       mode: 'lines',
       showlegend: false
@@ -69,11 +69,13 @@ export class AppComponent implements OnInit {
         showlegend: false
       });
     }
+    const ticks = this.logPlot ? this.plotHelper.logAxis() : this.plotHelper.linearAxis();
     const layout: Partial<Layout> = {
       ...this.plotHelper.defaultLayout,
       xaxis: {
+        ...ticks,
         type: this.logPlot ? 'log' : undefined,
-        autorange: this.logPlot ? 'reversed' : undefined
+        autorange: 'reversed'
       },
       yaxis: {
         range: this.logPlot ? undefined : [1, 30000000],
@@ -85,6 +87,7 @@ export class AppComponent implements OnInit {
       layout,
       config: this.plotHelper.config
     };
+    console.log(this.distribution);
   }
 
   private bisect(arr: DataRow[], left: number, right: number) {

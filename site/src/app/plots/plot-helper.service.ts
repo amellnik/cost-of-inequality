@@ -24,9 +24,24 @@ export class PlotHelperService {
   constructor() { }
 
   percentileAxisFormatter(p: number) {
-    return this.percentFormat.format(1 - p);
+    return this.percentFormat.format(p);
   }
 
+  linearAxis() {
+    const tickvals = [...Array(9).keys()].map(x => (x + 1) / 10);
+    return {
+      tickvals,
+      ticktext: tickvals.map(x => this.percentileAxisFormatter(x))
+    };
+  }
+
+  logAxis() {
+    const tickvals = [.99, .3, .1, .03, .01, .003, .001, .0003, .0001, .00003, .00001];
+    return {
+      tickvals,
+      ticktext: tickvals.map(x => this.percentileAxisFormatter(x))
+    };
+  }
 }
 
 export interface PlotObj {
