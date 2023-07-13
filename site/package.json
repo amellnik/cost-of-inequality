@@ -28,7 +28,7 @@
     "angular-plotly.js": "^2.0.0",
     "clarity": "^1.0.2",
     "debounce-decorator": "^1.0.6",
-    "plotly.js": "^1.54.1",
+    "plotly.js": "^1.58.5",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
